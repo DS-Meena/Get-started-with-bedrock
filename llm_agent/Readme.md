@@ -1,7 +1,47 @@
+# How to Start
+
+## Set Credentials
+
+First, to access Bedrock you need to give required permission to the IAM Role. You can do this via IAM Console, add AmazonBedrockFullAccess permission to your IAM user.
+
+**Configure the aws credentials:**
+
+Add your IAM role access ID and secret access key, these you can find from IAM console. 
+
+Enter default region, choose the region where Bedrock is available. and finally add default output format like Json, text.
+
+![alt text](image.png)
+
+You can use `aws configure list` command to check your configured values.
+
+## Get Access of Foundation Models
+
+One thing to note is that bedrock foundation models are not available in all regions. You can check what foundation models are available by changing your region.
+
+![Bedrock Access Models](image-1.png)
+
+As you can see in the above image, I am in the Oregon (us-west-2) region. In this region, I can access all models or atleast can request for access.
+
+To access any of these models first make sure, a valid payment method is set in your aws account, preferably a credit card.
+
+To access:
+1. Go to bedrock -> Model access.
+2. Request access for any model. 
+
+It will take around 5 minutes, before access is granted. Either the access will be granted or you will receive an error.
+
+
 
 # Troubleshooting
 
-### Issue with pydantic 2.5.3
+### botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "https://bedrock-runtime.us-west-2.amazonaws.com/model/amazon.titan-text-lite-v1/invoke
+
+Let's see
+
+## Windows
+Following issues are related to windows system, only.
+
+### Issue with pydantic 2.5.3 [Not Resolved]
 
 error: 
 pydantic.errors.PydanticUserError: If you use `@root_validator` with pre=False (the default) you MUST specify `skip_on_failure=True`. Note that `@root_validator` is deprecated and should be replaced with `@model_validator`.
@@ -12,7 +52,7 @@ pydantic - 2.5.3
 
 langchain - 0.0.27
 
-**Solution**
+**Possible Solution**
 Go to this file D:\MARS Program Files\miniconda\lib\site-packages\pydantic\deprecated\class_validators.py", line 240 and change default value of skip_on_failure to True. 
 
 

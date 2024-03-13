@@ -46,14 +46,18 @@ def plain_llm(question):
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
     llm = Bedrock(
-        credentials_profile_name="default",model_id="anthropic.claude-v2", region_name="a-south-1"
+        credentials_profile_name="default",model_id="amazon.titan-text-lite-v1", region_name="us-west-2"
     )
+    
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     print(llm_chain.invoke(question))
 
 def main():
     question = "Can I get a job in Amazon"
-    plain_llm(question)
+    
+    
+    
+    # plain_llm(question)
 
     # list_of_nums = [645, 6, 2, 9, 2]
     # question = f"Sum of the following numbers: {list_of_nums}"
