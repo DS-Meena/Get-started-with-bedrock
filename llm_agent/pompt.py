@@ -3,11 +3,15 @@ import json
 
 brt = boto3.client(service_name='bedrock-runtime')
 
+# json body depends on the model
 body = json.dumps({
-    "prompt": "\n\nHuman: which is the best game in world \n\nAssistant:",
-    "max_tokens_to_sample": 300,
-    "temperature": 0.1,
-    "top_p": 0.9,
+    "inputText": "do you know abouut IPL",
+    "textGenerationConfig": {
+        "maxTokenCount": 300,
+        "stopSequences": [],
+        "temperature": 0.1,
+        "topP": 0.9,
+    },
 })
 
 modelId = 'amazon.titan-text-lite-v1'
@@ -16,7 +20,8 @@ contentType = 'application/json'
 
 response = brt.invoke_model(body=body, modelId=modelId, contentType=contentType)
 
-response_body = json_loads(response.get('body').read())
+# response type can be different for different models
+response_body = json.loads(response.get('body').read())
 
 # text
-print(response_body.get('completion'))
+print(response_body['results'][0])

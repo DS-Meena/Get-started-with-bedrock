@@ -34,9 +34,23 @@ It will take around 5 minutes, before access is granted. Either the access will 
 
 # Troubleshooting
 
-### botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "https://bedrock-runtime.us-west-2.amazonaws.com/model/amazon.titan-text-lite-v1/invoke
+### Connection Timeout Issue
 
-Let's see
+Error: 
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "https://bedrock-runtime.us-west-2.amazonaws.com/model/amazon.titan-text-lite-v1/invoke
+
+This issue can be resolved by resolving the "could not resolve Host" issue. [Below]
+
+###  Could not resolve Host
+
+Error: fatal: unable to access 'https://github.com/DS-Meena/Get-started-with-bedrock.git/': Could not resolve host: github.com
+
+`ping google.com` result is *ping: google.com: Temporary failure in name resolution*. Means internet issue.
+
+1.  `vi /etc/resolv.conf`
+2. Add following line in that file: nameserver 8.8.8.8
+
+This will resolve both your ping and github issue.
 
 ## Windows
 Following issues are related to windows system, only.
