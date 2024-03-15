@@ -18,6 +18,9 @@ modelId = 'amazon.titan-text-lite-v1'
 accept = 'application/json'
 contentType = 'application/json'
 
+"""
+    Using Boto3 you need to replicate the correct API call.
+"""
 response = brt.invoke_model(body=body, modelId=modelId, contentType=contentType)
 
 # response type can be different for different models

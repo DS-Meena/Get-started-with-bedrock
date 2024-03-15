@@ -34,12 +34,18 @@ It will take around 5 minutes, before access is granted. Either the access will 
 
 # Troubleshooting
 
+### Malformed input request:
+raise ValueError(f"Error raised by bedrock service: {e}")
+ValueError: Error raised by bedrock service: An error occurred (ValidationException) when calling the InvokeModelWithResponseStream operation: Malformed input request: string [Observation] does not match pattern ^(\|+|User:)$, please reformat your input and try again.
+
+Status: **Unable to resolve this**
+
 ### Connection Timeout Issue
 
 Error: 
 botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "https://bedrock-runtime.us-west-2.amazonaws.com/model/amazon.titan-text-lite-v1/invoke
 
-This issue can be resolved by resolving the "could not resolve Host" issue. [Below]
+This issue can be resolved by resolving the "could not resolve Host" issue.
 
 ###  Could not resolve Host
 

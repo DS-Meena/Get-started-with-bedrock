@@ -24,18 +24,28 @@ def llm_with_tools(question):
     prompt = hub.pull("hwchase17/react-chat")
 
     sum_tool = Tool(
-        name="Sum_tool",
+        name="sum_tool",
         func=sum_list,
-        description="useful for adding numbers",
+        description="useful for adding numbers"
     )
     tools = [sum_tool]
 
     llm = Bedrock(
-        credentials_profile_name="default",model_id="anthropic.claude-v2", region_name="a-south-1"
+        credentials_profile_name="default",model_id="amazon.titan-text-lite-v1", region_name="us-west-2"
     )
-    agent = create_react_agent(llm=llm,tools=tools,prompt=prompt)
+
+    agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True, handle_parsing_errors=True)
-    answer = agent_executor.invoke({"input": f"{question}. Only use a use tool if need, otherwise respond with final answer.", "chat history": ""})
+
+    answer = agent_executor.invoke({
+        "input": f"{question}. Only use a use tool if need, otherwise respond with final answer.", 
+        "chat_history": "",
+        # "prompt_override": {
+        #     "maximum_length": 100,
+        #     "stop_sequences": ["."]
+        # }
+    })
+
     print(answer["output"])
 
 def plain_llm(question):
@@ -43,6 +53,8 @@ def plain_llm(question):
     Let's think step by step.
     Answer:
     """
+
+    # no to create the perfect json body
     prompt = PromptTemplate(template=template, input_variables=["question"])
 
     llm = Bedrock(
@@ -53,21 +65,24 @@ def plain_llm(question):
     print(llm_chain.invoke(question))
 
 def main():
-    question = "Can I get a job in Amazon"
-    
-    
-    
+
+    # Ask a question
+    # question = "Can I get a job in Amazon"
     # plain_llm(question)
 
-    # list_of_nums = [645, 6, 2, 9, 2]
-    # question = f"Sum of the following numbers: {list_of_nums}"
+    # Ask the text model to do summation
+    list_of_nums = [645, 6, 2, 9, 2]
+    question = f"Sum of the following numbers: {list_of_nums}"  
+    # plain_llm(question)     
 
-    # plain_llm(question)
     # expected_sum = sum(list_of_nums)
-    # print(f"\nExpected sum: {expected_sum}")
+    # print(f"\nExpected sum: {expected_sum}") 
 
-    # llm_with_tools(question)
-    # expected_sum = sum(list_of_nums)
-    # print(f"\nExpected sum: {expected_sum}")
+    """
+        plain llm can'get give you the correct summation.
+    """
+    llm_with_tools(question)
+    expected_sum = sum(list_of_nums)
+    print(f"\nExpected sum: {expected_sum}")
 
 main()
