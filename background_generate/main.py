@@ -59,8 +59,45 @@ class PhotoManipulation():
             photo.save(buffer, format="PNG")
             return base64.b64encode(buffer.getvalue()).decode("utf-8")
         
-        eles:
+        else:
             raise ValueError(f"Expected str (filename) or PIL Image. Got {type(photo)}")
     
     def update_photo(self, photo, mask, image_filename):
-        
+        logging.info("Making output photo from base photo")
+        prompt_text: str = "Portrait photo of person in black business suit and simple red shirt in Bangalore India"
+
+        photo_image = self.image_to_base64(photo)
+        mask_image =  self.image_to_base64(mask)
+        request = json.dumps({
+            "taskType": "INPAINTING",
+            "inPaintingParams": {
+                "image": photo_image,
+                "maskImage": mask_image,
+                "text": prompt_text
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 1,
+                "quality": "premium",
+                "width": self.photo_x,
+                "height": self.photo_y,
+                "cfgScale": 9.5,
+                "seed": 6
+            }
+        })
+
+        modelId = "amazon.titan-image-generator-v1"
+
+        response = self.bedrock_client.invoke_model(body=request, modelId=modelId)
+        response_body = json.loads(response.get("body").read())
+        image_3_b64_str = response_body["image"][0]
+
+        inpaint = Image.open(io.BytesIO(base64.decodyebytes(bytes(image_3_b64_str, "utf-8"))))
+        inpaint.save(f"inpaint_{image_filename}")
+
+def process_photo(image_filename: str):
+    pm = PhotoManipulation()
+    photo: Image = Image.open(image_filename)  
+    mask_photo: Image = pm.create_mask(photo, image_filename)
+    pm.update_photo(photo, mask_photo, image_filename)
+
+process_photo("Person.jpg")
