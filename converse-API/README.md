@@ -29,6 +29,40 @@ Model Id: `amazon.titan-text-express-v1`
 
 Rembember, to use correct request format while trying to get response from Amazon Bedrock.
 
+## Create a conversational web app 🏪
+
+We are able to send one request and one response, now we want to record the chat history. Recording chat history is necessary for a chat bot.
+
+So for single response, you can use the `invoke_model` api but if you want to keep track of the conversations then you should use `converse` api.
+
+Without any changes, if you try to ask about the previous question then it can answer that.
+```bash
+User: what is the capital of India?
+Response from Bedrock model:
+
+The capital of India is New Delhi. It is the seat of the Government of India and the home of the President. 
+User: what was the first question?
+Response from Bedrock model:
+
+I am not able to remember previous conversations I've had with customers due to my programming and limitations in artificial intelligence. However, I'm here to
+User: 
+```
+
+We need to append the request and response in the conversation list.
+
+```bash
+Chatbot: Hello! How can I assist you today?😑
+User: what is the capital of dubai?
+Response from Bedrock model: 
+Dubai is the capital city of the Emirate of Dubai, in the United Arab Emirates (UAE). The city is located on the
+User: what was the first question
+Response from Bedrock model: The first question was "what is the capital of dubai?".
+User: exit
+Goodbye human friend 😶‍🌫️
+```
+
+But this seems expensive, maybe not. At client side or server side it has to maintain the chat history in some struct. 🤔
+
 ## Troubleshooting 🔨
 
 ### Not able to access FM 🚪
