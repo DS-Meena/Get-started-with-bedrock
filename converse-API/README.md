@@ -63,6 +63,12 @@ Goodbye human friend 😶‍🌫️
 
 But this seems expensive, maybe not. At client side or server side it has to maintain the chat history in some struct. 🤔
 
+The chat-bot can be optimized by 💽:
+
+- **Sliding window approach:** Instead of maintaing all of the conversation, maintain only the most recent N messages. This helps manage token limits and memory usage.
+
+- **Summarization Technique:** Periodically summarize older parts of the conversation to maintain context while reducing token count.
+
 ## Troubleshooting 🔨
 
 ### Not able to access FM 🚪
